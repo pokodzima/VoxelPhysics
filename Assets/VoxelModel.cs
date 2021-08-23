@@ -9,12 +9,15 @@ public class VoxelModel : MonoBehaviour
 {
     public ComputeShader voxelizer;
     public int resolution;
+    public GameObject submeshPrefab;
     
     private float _unit;
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private MeshRenderer _meshRenderer;
     private List<Voxel_t> _voxelGrid;
+
+    private List<Voxel_t> _subMeshVoxelGrid;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +25,7 @@ public class VoxelModel : MonoBehaviour
         TryGetComponent(out _meshCollider);
         TryGetComponent(out _meshRenderer);
         Voxelize();
+        _subMeshVoxelGrid = new List<Voxel_t>();
     }
 
     private void Voxelize()
@@ -39,17 +43,23 @@ public class VoxelModel : MonoBehaviour
 
     public void DestroyVoxels(Vector3 pos, float rad)
     {
+        int count = _voxelGrid.Count;
         for (int i = 0; i < _voxelGrid.Count; i++)
         {
             if (OverlapSphere(transform.TransformPoint(_voxelGrid[i].position), pos, rad))
             {
                 print("Destroyed Voxel");
+                _subMeshVoxelGrid.Add(_voxelGrid[i]);
                 _voxelGrid.RemoveAt(i);
                 i--;
             }
         }
 
-        BuildMesh();
+        if (count != _voxelGrid.Count)
+        {
+            BuildMesh();
+            BuildSubMesh();
+        }
     }
 
     private bool OverlapSphere(Vector3 pointPos,Vector3 spherePos, float rad)
@@ -61,8 +71,25 @@ public class VoxelModel : MonoBehaviour
 
     private void BuildMesh()
     {
+        GetComponent<Rigidbody>().mass = _voxelGrid.Count;
         _meshFilter.sharedMesh = VoxelMesh.Build(_voxelGrid.ToArray(), _unit);
         _meshCollider.sharedMesh = _meshFilter.sharedMesh;
+    }
+
+    private void BuildSubMesh()
+    {
+        var submesh = VoxelMesh.Build(_subMeshVoxelGrid.ToArray(), _unit);
+        /*Vector3 pos = Vector3.zero;
+        for (int i = 0; i < _subMeshVoxelGrid.Count; i = i+ _subMeshVoxelGrid.Count/10)
+        {
+            pos += transform.TransformPoint(_subMeshVoxelGrid[i].position);
+        }
+        pos = pos / 10;*/
+        var submeshObject = Instantiate(submeshPrefab);
+        submeshObject.GetComponent<MeshFilter>().sharedMesh = submesh;
+        submeshObject.GetComponent<MeshCollider>().sharedMesh = submesh;
+        submeshObject.GetComponent<Rigidbody>().mass = _subMeshVoxelGrid.Count;
+        _subMeshVoxelGrid.Clear();
     }
 
     private void OnDrawGizmosSelected()
@@ -75,5 +102,11 @@ public class VoxelModel : MonoBehaviour
             Gizmos.DrawCube(transform.TransformPoint(voxel.position),unitVector);
         }
         Gizmos.color = Color.white;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Dynamic"))
+            DestroyVoxels(other.contacts[0].point,Mathf.Clamp(other.impulse.magnitude*0.0001f,0f,1f));
     }
 }
