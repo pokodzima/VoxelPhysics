@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\kolob\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\kolob\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Voxel Physics.1324917982.00" t="ExcludeRecursive" />
+    <e p="C:\Users\kolob\Voxel Physics" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Block.cs" t="Include" />
+        <e p="Chunk.cs" t="Include" />
+        <e p="CsharpVoxReader" t="Include">
+          <e p="Chunk.cs" t="Include" />
+          <e p="Chunks" t="Include">
+            <e p="GroupNode.cs" t="Include" />
+            <e p="Layer.cs" t="Include" />
+            <e p="Main.cs" t="Include" />
+            <e p="Material.cs" t="Include" />
+            <e p="MaterialOld.cs" t="Include" />
+            <e p="Model.cs" t="Include" />
+            <e p="Pack.cs" t="Include" />
+            <e p="Palette.cs" t="Include" />
+            <e p="ShapeNode.cs" t="Include" />
+            <e p="Size.cs" t="Include" />
+            <e p="TransformNode.cs" t="Include" />
+            <e p="Unknown.cs" t="Include" />
+          </e>
+          <e p="Extensions.cs" t="Include" />
+          <e p="GenericsReader.cs" t="Include" />
+          <e p="IVoxLoader.cs" t="Include" />
+          <e p="VoxReader.cs" t="Include" />
+        </e>
+        <e p="MeshUtils.cs" t="Include" />
+        <e p="Quad.cs" t="Include" />
+        <e p="VoxelData.cs" t="Include" />
+        <e p="VoxImporter.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\Bin" t="ExcludeRecursive" />
+      <e p="Voxel Physics.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>

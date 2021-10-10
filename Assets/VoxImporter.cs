@@ -6,6 +6,7 @@ using CsharpVoxReader.Chunks;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
+using Material = UnityEngine.Material;
 using Object = UnityEngine.Object;
 
 [ScriptedImporter(1,"vox")]
@@ -16,7 +17,8 @@ public class VoxImporter : ScriptedImporter,IVoxLoader
     {
         model = new GameObject();
         model.AddComponent<VoxelData>();
-        
+        model.AddComponent<Chunk>();
+
         VoxReader reader = new VoxReader(ctx.assetPath,this);
         reader.Read();
         
