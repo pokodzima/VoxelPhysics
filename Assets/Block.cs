@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block {
-
+public class Block
+{
     public Mesh mesh;
     Chunk parentChunk;
 
@@ -14,17 +15,17 @@ public class Block {
         if (type != MeshUtils.BlockType.AIR)
         {
             List<Quad> quads = new List<Quad>();
-            if (!HasSolidNeighbour((int)offset.x, (int)offset.y - 1, (int)offset.z))
+            if (!HasSolidNeighbour((int) offset.x, (int) offset.y - 1, (int) offset.z))
                 quads.Add(new Quad(MeshUtils.BlockSide.BOTTOM, offset, type));
-            if (!HasSolidNeighbour((int)offset.x, (int)offset.y + 1, (int)offset.z))
+            if (!HasSolidNeighbour((int) offset.x, (int) offset.y + 1, (int) offset.z))
                 quads.Add(new Quad(MeshUtils.BlockSide.TOP, offset, type));
-            if (!HasSolidNeighbour((int)offset.x - 1, (int)offset.y, (int)offset.z))
+            if (!HasSolidNeighbour((int) offset.x - 1, (int) offset.y, (int) offset.z))
                 quads.Add(new Quad(MeshUtils.BlockSide.LEFT, offset, type));
-            if (!HasSolidNeighbour((int)offset.x + 1, (int)offset.y, (int)offset.z))
+            if (!HasSolidNeighbour((int) offset.x + 1, (int) offset.y, (int) offset.z))
                 quads.Add(new Quad(MeshUtils.BlockSide.RIGHT, offset, type));
-            if (!HasSolidNeighbour((int)offset.x, (int)offset.y, (int)offset.z + 1))
+            if (!HasSolidNeighbour((int) offset.x, (int) offset.y, (int) offset.z + 1))
                 quads.Add(new Quad(MeshUtils.BlockSide.FRONT, offset, type));
-            if (!HasSolidNeighbour((int)offset.x, (int)offset.y, (int)offset.z - 1))
+            if (!HasSolidNeighbour((int) offset.x, (int) offset.y, (int) offset.z - 1))
                 quads.Add(new Quad(MeshUtils.BlockSide.BACK, offset, type));
 
             if (quads.Count == 0) return;
@@ -50,9 +51,11 @@ public class Block {
         {
             return false;
         }
-        if(parentChunk.chunkData[x + parentChunk.width * (y + parentChunk.depth * z)] == MeshUtils.BlockType.AIR
-            || parentChunk.chunkData[x + parentChunk.width * (y + parentChunk.depth * z)] == MeshUtils.BlockType.WATER)
-        return false;
+
+
+        if (parentChunk.chunkData[x + parentChunk.width * (y + parentChunk.height * z)] == MeshUtils.BlockType.AIR
+            || parentChunk.chunkData[x + parentChunk.width * (y + parentChunk.height * z)] == MeshUtils.BlockType.WATER)
+            return false;
         return true;
     }
 }

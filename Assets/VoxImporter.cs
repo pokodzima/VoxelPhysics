@@ -31,17 +31,18 @@ public class VoxImporter : ScriptedImporter,IVoxLoader
         VoxelData voxelData = model.GetComponent<VoxelData>();
         voxelData.linearData = new byte[sizeX*sizeY*sizeZ];
         int index = 0;
-        for (int x = 0; x < sizeX; x++)
+        for (int z = 0; z < sizeX; z++)
         {
             for (int y = 0; y < sizeY; y++)
             {
-                for (int z = 0; z < sizeZ; z++)
+                for (int x = 0; x < sizeX; x++)
                 {
                     voxelData.linearData[index] = data[x, y, z];
                     index++;
                 }
             }
         }
+        Debug.Log(index);
         voxelData.sizeX = sizeX;
         voxelData.sizeY = sizeY;
         voxelData.sizeZ = sizeZ;
