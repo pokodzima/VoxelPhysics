@@ -13,11 +13,15 @@ using Object = UnityEngine.Object;
 public class VoxImporter : ScriptedImporter,IVoxLoader
 {
     private GameObject model;
+    private Material material;
     public override void OnImportAsset(AssetImportContext ctx)
     {
         model = new GameObject();
         model.AddComponent<VoxelData>();
         model.AddComponent<Chunk>();
+        model.AddComponent<MeshRenderer>();
+        model.AddComponent<MeshFilter>();
+        model.AddComponent<MeshCollider>();
 
         VoxReader reader = new VoxReader(ctx.assetPath,this);
         reader.Read();
@@ -42,7 +46,6 @@ public class VoxImporter : ScriptedImporter,IVoxLoader
                 }
             }
         }
-        Debug.Log(index);
         voxelData.sizeX = sizeX;
         voxelData.sizeY = sizeY;
         voxelData.sizeZ = sizeZ;

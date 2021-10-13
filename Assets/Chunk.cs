@@ -20,7 +20,7 @@ public class Chunk : MonoBehaviour
     public int octaves = 8;
     public float heightOffset = -33;
 
-    Vector3 location;
+    public Vector3 location;
 
     public Block[,,] blocks;
     //Flat[x + WIDTH * (y + DEPTH * z)] = Original[x, y, z]
@@ -52,24 +52,10 @@ public class Chunk : MonoBehaviour
 
     }
 
-    public void CreateChunk(Vector3 dimensions, Vector3 position, byte[] data)
+    public void RebuildChunk()
     {
-        
-        location = position;
-        width = (int) dimensions.x;
-        height = (int)dimensions.y;
-        depth = (int)dimensions.z;
-
-        chunkData = new MeshUtils.BlockType[width*height*depth];
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (data[i] == 0) chunkData[i] = MeshUtils.BlockType.AIR;
-            else chunkData[i] = MeshUtils.BlockType.STONE;
-        }
-
-
-        MeshFilter mf = this.gameObject.AddComponent<MeshFilter>();
-        MeshRenderer mr = this.gameObject.AddComponent<MeshRenderer>();
+        MeshFilter mf = this.gameObject.GetComponent<MeshFilter>();
+        MeshRenderer mr = this.gameObject.GetComponent<MeshRenderer>();
         mr.material = atlas;
         blocks = new Block[width, height, depth];
         BuildChunk();
@@ -133,8 +119,25 @@ public class Chunk : MonoBehaviour
         newMesh.RecalculateBounds();
 
         mf.mesh = newMesh;
-        MeshCollider collider = this.gameObject.AddComponent<MeshCollider>();
-        collider.sharedMesh = mf.mesh;
+        GetComponent<MeshCollider>().sharedMesh = newMesh;
+    }
+
+    public void CreateChunk(Vector3 dimensions, Vector3 position, byte[] data)
+    {
+        
+        location = position;
+        width = (int) dimensions.x;
+        height = (int)dimensions.y;
+        depth = (int)dimensions.z;
+
+        chunkData = new MeshUtils.BlockType[width*height*depth];
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (data[i] == 0) chunkData[i] = MeshUtils.BlockType.AIR;
+            else chunkData[i] = MeshUtils.BlockType.STONE;
+        }
+        
+        RebuildChunk();
     }
 
     [BurstCompile]

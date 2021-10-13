@@ -31,6 +31,7 @@
         </e>
         <e p="MeshUtils.cs" t="Include" />
         <e p="Quad.cs" t="Include" />
+        <e p="RaycastExplosion.cs" t="Include" />
         <e p="VoxelData.cs" t="Include" />
         <e p="VoxImporter.cs" t="Include" />
       </e>
